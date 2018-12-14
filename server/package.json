@@ -1,0 +1,52 @@
+{
+  "name": "bitmark-profile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "forever start -f -w --watchDirectory=`pwd` index.js && forever logs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bitmark-sdk": "^2.0.1",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "fluent-logger": "^3.2.1",
+    "fs-extra": "^7.0.1",
+    "helmet": "^3.15.0",
+    "lodash": "^4.17.11",
+    "method-override": "^3.0.0",
+    "moment": "^2.23.0",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "node-redis": "^0.1.7",
+    "pg": "^7.7.1",
+    "redis": "^2.8.0",
+    "serve-favicon": "^2.5.0",
+    "squel": "^5.12.2",
+    "uuid": "^3.3.2",
+    "winston": "^3.1.0",
+    "winston-lumberjack": "0.0.9"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-module-resolver": "^3.1.1",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-es5": "^0.5.0",
+    "eslint-config-es6": "^1.10.3",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-react": "^7.11.1",
+    "mocha": "^5.2.0"
+  }
+}
