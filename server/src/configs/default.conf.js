@@ -20,9 +20,8 @@ module.exports = {
     password: CONFIGURATION_REQUIRED,
     database: CONFIGURATION_REQUIRED,
   },
-  redis: {
-    host: CONFIGURATION_REQUIRED,
-    port: CONFIGURATION_REQUIRED,
+  thumbnail: {
+    s3_bucket: CONFIGURATION_REQUIRED,
   },
   saved_file_folder: CONFIGURATION_REQUIRED,
 
@@ -33,6 +32,6 @@ module.exports = {
   },
   api_server: CONFIGURATION_REQUIRED,
   profile_server: CONFIGURATION_REQUIRED,
-  registry_server:CONFIGURATION_REQUIRED,
+  registry_server: CONFIGURATION_REQUIRED,
 
 };

@@ -7,9 +7,9 @@ const {
   verifySignature,
 } = require('./../utils');
 const { getRecord, setRecord } = require('./../models');
+const { uploadFileToS3 } = require('./../services');
 
 const { config } = global.appContext;
-
 
 const getBitmarksOfAssetOfIssuer = async (accountNumber, assetId, lastOffset) => {
   let urlGetBitmark = `${config.api_server}/v1/bitmarks?issuer=${accountNumber}&asset_id=${assetId}&pending=true&to=later` + (lastOffset ? `&at=${lastOffset}` : '');
@@ -52,34 +52,25 @@ module.exports = {
         throw newError('No files were uploaded.', 400);
       }
 
-      let key = `Limited_Edition_${assetId}_${bitmarkAccountNumber}`;
-      await setRecord(key, { limited: limitedEdition });
-
-      let thumbnailFilePath = `${config.saved_file_folder}/thumbnails/${assetId}.png`;
-      if (!fse.existsSync(`${config.saved_file_folder}/thumbnails`)) {
-        fse.mkdirSync(`${config.saved_file_folder}/thumbnails`);
+      console.log('limitedEdition :', limitedEdition);
+      if (limitedEdition) {
+        let key = `Limited_Edition_${assetId}_${bitmarkAccountNumber}`;
+        await setRecord(key, { limited: limitedEdition });
       }
-      fse.createReadStream(req.file.path).pipe(fse.createWriteStream(thumbnailFilePath));
-
+      await uploadFileToS3(fse.readFileSync(req.file.path), `${assetId}_thumbnail.png`);
+      await fse.unlink(req.file.path);
       res.send({ ok: true });
     } catch (error) {
       console.log('error:', error);
+      if (req.file.path && fse.existsSync(req.file.path)) {
+        await fse.unlink(req.file.path);
+      }
       responseError(res, error);
     }
   },
   getThumbnail: async (req, res) => {
-    try {
-      let assetId = req.query.asset_id;
-      let thumbnailFilePath = `${config.saved_file_folder}/thumbnails/${assetId}.png`;
-      if (fse.existsSync(thumbnailFilePath)) {
-        fse.createReadStream(thumbnailFilePath).pipe(res);
-      } else {
-        throw newError('File not exist!', 404);
-      }
-    } catch (error) {
-      console.log('error:', error);
-      responseError(res, error);
-    }
+    let assetId = req.query.asset_id;
+    res.redirect(`${config.thumbnail.server_url}/${assetId}_thumbnail.png`);
   },
   postLimitedEdition: async (req, res) => {
     try {
@@ -125,7 +116,7 @@ module.exports = {
       }
       let key = `Limited_Edition_${assetId}_${bitmarkAccountNumber}`;
       let result = await getRecord(key);
-      res.send(result);
+      res.send(result ? result.value : {});
     } catch (error) {
       console.log('error:', error);
       responseError(res, error);
@@ -138,7 +129,8 @@ module.exports = {
       let asset = assetInfo.asset;
       let key = `Limited_Edition_${assetId}_${asset.registrant}`;
       let result = await getRecord(key);
-      let limited = result.limited;
+      console.log('result :', result);
+      let limited = result ? result.value.limited : 0;
 
       let totalBitmark = await getTotalBitmarksOfAssetOfIssuer(asset.registrant, assetId);
       res.render('asset-claim', {
@@ -152,6 +144,7 @@ module.exports = {
         claimOnRegistryUrl: `${config.registry_server}/assets/${assetId}/claim`
       });
     } catch (error) {
+      console.log('error:', error);
       responseError(res, error);
     }
   },

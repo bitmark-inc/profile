@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.376.0",
     "axios": "^0.18.0",
     "bitmark-sdk": "^2.0.1",
     "body-parser": "^1.18.3",

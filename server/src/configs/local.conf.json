@@ -1,14 +1,14 @@
 {
   "database": {
-    "user": "bitmark",
+    "user": "bitmark_profile",
     "password": "@CHANGE-TO-SECURE-PASSWORD@",
     "host": "localhost",
     "port": 5432,
-    "database": "bitmark_profile"
+    "database": "bitmark"
   },
-  "redis": {
-    "host": "localhost",
-    "port": 6379
+  "thumbnail": {
+    "s3_bucket": "bitmark-profiles-devnet",
+    "server_url": "https://s3-ap-southeast-1.amazonaws.com/bitmark-profiles-devnet"
   },
   "saved_file_folder": "./saved",
   "bitmarkSDK": {
@@ -16,7 +16,7 @@
     "network": "testnet"
   },
   "api_server": "https://api.test.bitmark.com",
-  "profile_server": "http://192.168.0.107:1102",
+  "profile_server": "http://192.168.0.114:1102",
   "registry_server": "https://registry.test.bitmark.com",
   "map_identities": {
     "eS7sc1CYxvPEnipqeo5btBMriC2wvoEQCw7kyZjqVEZYui3DxA": "Le Xuan bach"

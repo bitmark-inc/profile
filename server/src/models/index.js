@@ -16,8 +16,7 @@ const getRecord = async (key) => {
 };
 
 const setRecord = async (key, value) => {
-  let existRecord = getRecord(key);
-
+  let existRecord = await getRecord(key);
   let query;
   if (existRecord) {
     query = dbUtil.squel.update().table('profile.key_value')
