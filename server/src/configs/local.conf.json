@@ -1,4 +1,5 @@
 {
+  "port": 1102,
   "database": {
     "user": "bitmark_profile",
     "password": "@CHANGE-TO-SECURE-PASSWORD@",
@@ -16,9 +17,9 @@
     "network": "testnet"
   },
   "api_server": "https://api.test.bitmark.com",
-  "profile_server": "http://192.168.0.114:1102",
+  "profile_server": "http://192.168.0.106:1102",
   "registry_server": "https://registry.test.bitmark.com",
   "map_identities": {
-    "eS7sc1CYxvPEnipqeo5btBMriC2wvoEQCw7kyZjqVEZYui3DxA": "Le Xuan bach"
+    "eS7sc1CYxvPEnipqeo5btBMriC2wvoEQCw7kyZjqVEZYui3DxA": "Le Xuan Bach"
   }
 }
