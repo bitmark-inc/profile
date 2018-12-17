@@ -1,4 +1,5 @@
 const http = require('http');
+const createError = require('http-errors');
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -26,6 +27,10 @@ class Server {
     this.app.disable('x-powered-by');
     this.app.use(morgan('dev'));
     this.app.use('', router);
+
+    this.app.use(function (req, res, next) {
+      next(createError(404));
+    });
   }
 
   run() {
