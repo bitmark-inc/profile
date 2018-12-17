@@ -24,9 +24,7 @@ router.get('/api/health', async (req, res) => {
     let query = dbUtil.squel.select().from('pg_catalog.pg_user')
       .where('usename = ?', config.database.user)
       .toParam();
-    console.log('query :', query);
     let returnedData = await dbUtil.executeQuery(query);
-    console.log('returnedData :', returnedData);
     if (returnedData && returnedData.rows && returnedData.rows.length > 0) {
       res.status(200);
       res.send({ ok: true });
