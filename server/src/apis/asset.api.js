@@ -33,9 +33,9 @@ module.exports = {
   postThumbnail: async (req, res) => {
     try {
       let signature = req.headers.signature;
-      let assetId = req.headers.asset_id;
-      let limitedEdition = req.headers.limited_edition;
       let bitmarkAccountNumber = req.headers.requester;
+      let assetId = req.body.asset_id;
+      let limitedEdition = req.body.limited_edition;
       console.log('postThumbnail : ', { signature, assetId, limitedEdition, bitmarkAccountNumber });
       if (!bitmarkSDK.Account.isValidAccountNumber(bitmarkAccountNumber)) {
         throw newError('Account number is not valid.', 400);

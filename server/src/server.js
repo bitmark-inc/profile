@@ -28,7 +28,7 @@ class Server {
     this.app.use(morgan('dev'));
     this.app.use('', router);
 
-    this.app.use(function (req, res, next) {
+    this.app.use((req, res, next) => {
       next(createError(404));
     });
   }
