@@ -137,7 +137,7 @@ module.exports = {
         assetName: asset.name,
         assetId: `${asset.id.substring(0, 4)}...${asset.id.substring(asset.id.length - 4, asset.id.length)}`,
         limited,
-        totalBitmark: totalBitmark.length,
+        totalBitmark: totalBitmark.filter(bm => bm.owner === asset.registrant).length,
         thumbnailUrl: `${config.profile_server}/s/asset/thumbnail?asset_id=${assetId}`,
         registrant: config.map_identities[asset.registrant] || `${asset.registrant.substring(0, 4)}...${asset.registrant.substring(asset.registrant.length - 4, asset.registrant.length)}`,
         registeredAt: moment(asset.created_at).format('YYYY MMM DD'),
