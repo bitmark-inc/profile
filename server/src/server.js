@@ -32,6 +32,11 @@ class Server {
     this.server = http.createServer(this.app);
     this.server.listen(config.port);
   }
+  close() {
+    if (this.server) {
+      this.server.close();
+    }
+  }
 }
 
 module.exports = Server;
