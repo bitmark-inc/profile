@@ -20,6 +20,8 @@
   "profile_server": "http://192.168.0.106:1102",
   "registry_server": "https://registry.test.bitmark.com",
   "map_identities": {
-    "eS7sc1CYxvPEnipqeo5btBMriC2wvoEQCw7kyZjqVEZYui3DxA": "Le Xuan Bach"
+    "eS7sc1CYxvPEnipqeo5btBMriC2wvoEQCw7kyZjqVEZYui3DxA": {
+      "name": "Le Xuan Bach"
+    }
   }
 }
