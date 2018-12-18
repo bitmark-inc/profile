@@ -140,7 +140,7 @@ module.exports = {
         totalBitmark: totalBitmark.filter(bm => bm.owner === asset.registrant).length,
         thumbnailUrl: `${config.profile_server}/s/asset/thumbnail?asset_id=${assetId}`,
         registrant: config.map_identities[asset.registrant] || `${asset.registrant.substring(0, 4)}...${asset.registrant.substring(asset.registrant.length - 4, asset.registrant.length)}`,
-        registeredAt: moment(asset.created_at).format('YYYY MMM DD'),
+        registeredAt: asset.created_at ? moment(asset.created_at).format('YYYY MMM DD') : 'Pending...',
         claimOnRegistryUrl: `${config.registry_server}/assets/${assetId}/claim`
       });
     } catch (error) {
