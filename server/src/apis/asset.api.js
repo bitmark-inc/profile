@@ -129,7 +129,6 @@ module.exports = {
       let asset = assetInfo.asset;
       let key = `Limited_Edition_${assetId}_${asset.registrant}`;
       let result = await getRecord(key);
-      console.log('result :', result);
       let limited = result ? result.value.limited : 0;
 
       let totalBitmark = await getTotalBitmarksOfAssetOfIssuer(asset.registrant, assetId);
@@ -143,7 +142,7 @@ module.exports = {
           ? config.map_identities[asset.registrant].name
           : `${asset.registrant.substring(0, 4)}...${asset.registrant.substring(asset.registrant.length - 4, asset.registrant.length)}`,
         registeredAt: asset.created_at ? moment(asset.created_at).format('YYYY MMM DD') : 'Pending...',
-        claimOnRegistryUrl: `${config.registry_server}/assets/${assetId}/claim`
+        claimOnRegistryUrl: `${config.registry_server}/assets/${assetId}/claim-request`,
       });
     } catch (error) {
       console.log('error:', error);
