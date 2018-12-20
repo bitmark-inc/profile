@@ -1,8 +1,8 @@
 
-CREATE USER bitmark_profile ENCRYPTED PASSWORD '@CHANGE-TO-SECURE-PASSWORD@';
+CREATE USER profiles ENCRYPTED PASSWORD '@CHANGE-TO-SECURE-PASSWORD@';
 
-CREATE database bitmark;
-\connect bitmark;
+CREATE database profiles;
+\connect profiles;
 
 CREATE SCHEMA IF NOT EXISTS profile;
 
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS profile.key_value (
   PRIMARY KEY(profile_key)
 );
 
-GRANT CONNECT ON database bitmark TO bitmark_profile;
-GRANT USAGE ON SCHEMA profile TO bitmark_profile;
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA profile TO bitmark_profile;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA profile TO bitmark_profile;
+GRANT CONNECT ON database profiles TO profiles;
+GRANT USAGE ON SCHEMA profile TO profiles;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA profile TO profiles;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA profile TO profiles;
