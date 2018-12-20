@@ -141,7 +141,7 @@ module.exports = {
         registrant: config.map_identities[asset.registrant]
           ? config.map_identities[asset.registrant].name
           : `${asset.registrant.substring(0, 4)}...${asset.registrant.substring(asset.registrant.length - 4, asset.registrant.length)}`,
-        registeredAt: asset.created_at ? moment(asset.created_at).format('YYYY MMM DD') : 'Pending...',
+        registeredAt: (asset.created_at ? moment(asset.created_at).format('YYYY MMM DD') : 'Pending...').toUpperCase(),
         claimOnRegistryUrl: `${config.registry_server}/assets/${assetId}/claim-request`,
       });
     } catch (error) {

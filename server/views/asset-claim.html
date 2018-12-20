@@ -17,9 +17,9 @@
               <@- registrant @>
             </p>
 
-            <p>Asset ID: <@- assetId @>
+            <p>ASSET ID: <@- assetId @>
             </p>
-            <p>Date of registration: <@- registeredAt @>
+            <p>DATE OF REGISTRANT: <@- registeredAt @>
             </p>
           </div>
         </div>
@@ -39,7 +39,6 @@
   }
 
   .claim-iframe {
-    background-color: rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -83,6 +82,7 @@
     font-weight: bold;
     display: flex;
     justify-content: flex-end;
+    text-decoration: none;
   }
 
   .secured img {
@@ -91,7 +91,9 @@
 
   p {
     margin: 0;
+    font: 300 10px Avenir, sans-serif;
     line-height: 18px;
+    text-transform: uppercase;
   }
 
   .btn-default {
