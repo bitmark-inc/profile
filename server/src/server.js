@@ -1,5 +1,4 @@
 const http = require('http');
-const createError = require('http-errors');
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
@@ -28,8 +27,9 @@ class Server {
     this.app.use(morgan('dev'));
     this.app.use('', router);
 
-    this.app.use((req, res, next) => {
-      next(createError(404));
+    this.app.use((req, res) => {
+      res.status(404);
+      res.send({ message: 'Page not found!' });
     });
   }
 
