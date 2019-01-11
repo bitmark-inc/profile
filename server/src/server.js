@@ -22,6 +22,7 @@ class Server {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(methodOverride());
+    this.app.use(this._allowCrossDomain);
 
     this.app.disable('x-powered-by');
     this.app.use(morgan('dev'));
@@ -31,6 +32,13 @@ class Server {
       res.status(404);
       res.send({ message: 'Page not found!' });
     });
+  }
+
+  _allowCrossDomain(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods', 'GET');
+    next();
   }
 
   run() {
