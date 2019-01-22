@@ -127,16 +127,13 @@ module.exports = {
       let assetId = req.params.assetId;
       let assetInfo = await bitmarkSDK.Asset.get(assetId);
       let asset = assetInfo.asset;
-      let key = `Limited_Edition_${assetId}_${asset.registrant}`;
-      let result = await getRecord(key);
-      let limited = result ? result.value.limited : 0;
-
-      let totalBitmark = await getTotalBitmarksOfAssetOfIssuer(asset.registrant, assetId);
+      let issuer = req.query.issuer || asset.registrant;
+      let totalIssuedBitmarkOfIssuer = await getTotalBitmarksOfAssetOfIssuer(issuer, assetId);
       res.render('asset-claim', {
         assetName: asset.name,
         assetId: `${asset.id.substring(0, 4)}...${asset.id.substring(asset.id.length - 4, asset.id.length)}`,
-        limited,
-        totalBitmark: limited - totalBitmark.length + 1,
+        limited: totalIssuedBitmarkOfIssuer.length - 1,
+        totalEditionLeft: totalIssuedBitmarksOfIssuer.filter(bitmark => bitmark.owner === issuer).length - 1,
         thumbnailUrl: `${config.profile_server}/s/asset/thumbnail?asset_id=${assetId}`,
         registrant: config.map_identities[asset.registrant]
           ? config.map_identities[asset.registrant].name
