@@ -1,6 +1,9 @@
+const path = require('path');
 (async () => {
   let appContext = require('./src/context');
   global.appContext = appContext;
+
+  global.appContext.root = path.join(__dirname);
 
   let Server = require('./src/server');
   let server = new Server();

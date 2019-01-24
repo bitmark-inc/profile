@@ -19,9 +19,5 @@
   "api_server": "https://api.test.bitmark.com",
   "profile_server": "http://192.168.0.106:1102",
   "registry_server": "https://registry.test.bitmark.com",
-  "map_identities": {
-    "eS7sc1CYxvPEnipqeo5btBMriC2wvoEQCw7kyZjqVEZYui3DxA": {
-      "name": "Le Xuan Bach"
-    }
-  }
+  "identities_file_path": "./src/configs/identities.json"
 }

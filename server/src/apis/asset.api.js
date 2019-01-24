@@ -1,3 +1,4 @@
+const path = require('path');
 const bitmarkSDK = require('bitmark-sdk');
 const fse = require('fs-extra');
 const axios = require('axios');
@@ -129,14 +130,15 @@ module.exports = {
       let asset = assetInfo.asset;
       let issuer = req.query.issuer || asset.registrant;
       let totalIssuedBitmarkOfIssuer = await getTotalBitmarksOfAssetOfIssuer(issuer, assetId);
+      let constIdentities = require(path.join(global.appContext.root, config.identities_file_path));
       res.render('asset-claim', {
         assetName: asset.name,
         assetId: `${asset.id.substring(0, 4)}...${asset.id.substring(asset.id.length - 4, asset.id.length)}`,
         limited: totalIssuedBitmarkOfIssuer.length - 1,
         totalEditionLeft: totalIssuedBitmarksOfIssuer.filter(bitmark => bitmark.owner === issuer).length - 1,
         thumbnailUrl: `${config.profile_server}/s/asset/thumbnail?asset_id=${assetId}`,
-        registrant: config.map_identities[asset.registrant]
-          ? config.map_identities[asset.registrant].name
+        registrant: constIdentities[asset.registrant]
+          ? constIdentities[asset.registrant].name
           : `${asset.registrant.substring(0, 4)}...${asset.registrant.substring(asset.registrant.length - 4, asset.registrant.length)}`,
         registeredAt: (asset.created_at ? moment(asset.created_at).format('YYYY MMM DD') : 'Pending...').toUpperCase(),
         claimOnRegistryUrl: `${config.registry_server}/assets/${assetId}/claim-request`,

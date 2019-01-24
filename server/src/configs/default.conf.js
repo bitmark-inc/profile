@@ -25,7 +25,8 @@ module.exports = {
   },
   saved_file_folder: CONFIGURATION_REQUIRED,
 
-  map_identities: CONFIGURATION_REQUIRED,
+  identities_file_path: CONFIGURATION_REQUIRED,
+
   bitmarkSDK: {
     apiToken: CONFIGURATION_REQUIRED,
     network: CONFIGURATION_REQUIRED

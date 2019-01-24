@@ -1,17 +1,16 @@
-
+const path = require('path');
 const { config } = global.appContext;
 
 module.exports = {
   getIdentities: (req, res) => {
-    res.send({
-      identities: config.map_identities
-    });
+    res.send({ identities: require(path.join(global.appContext.root, config.identities_file_path)) });
   },
   getIdentity: (req, res) => {
     let accountNumber = req.params.accountNumber;
-    if (accountNumber && config.map_identities[accountNumber]) {
+    let constIdentities = require(path.join(global.appContext.root, config.identities_file_path));
+    if (accountNumber && constIdentities[accountNumber]) {
       let identities = {};
-      identities[accountNumber] = config.map_identities[accountNumber];
+      identities[accountNumber] = constIdentities[accountNumber];
       return res.send({ identities });
     }
     res.send({ identities: {} });
