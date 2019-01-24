@@ -135,7 +135,7 @@ module.exports = {
         assetName: asset.name,
         assetId: `${asset.id.substring(0, 4)}...${asset.id.substring(asset.id.length - 4, asset.id.length)}`,
         limited: totalIssuedBitmarkOfIssuer.length - 1,
-        totalEditionLeft: totalIssuedBitmarksOfIssuer.filter(bitmark => bitmark.owner === issuer).length - 1,
+        totalEditionLeft: totalIssuedBitmarkOfIssuer.filter(bitmark => bitmark.owner === issuer).length - 1,
         thumbnailUrl: `${config.profile_server}/s/asset/thumbnail?asset_id=${assetId}`,
         registrant: constIdentities[asset.registrant]
           ? constIdentities[asset.registrant].name
