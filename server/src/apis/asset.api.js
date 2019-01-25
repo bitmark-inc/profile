@@ -22,8 +22,9 @@ const getTotalBitmarksOfAssetOfIssuer = async (issuer, assetId) => {
 
   let results = await getBitmarksOfAssetOfIssuer(issuer, assetId);
   returnedBitmarks = returnedBitmarks.concat(results.data.bitmarks || []);
-  while (results && results.bitmarks && results.bitmarks.length === 100) {
-    results = await getBitmarksOfAssetOfIssuer(issuer, assetId);
+  while (results && results.data && results.data.bitmarks && results.data.bitmarks.length === 100) {
+    let lastOffset = results.data.bitmarks[99].offset;
+    results = await getBitmarksOfAssetOfIssuer(issuer, assetId, lastOffset);
     returnedBitmarks = returnedBitmarks.concat(results.data.bitmarks || []);
   }
   return returnedBitmarks;
