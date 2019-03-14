@@ -7,6 +7,7 @@
     "port": 5432,
     "database": "bitmark"
   },
+  "public_key_file": "/Users/binle/Workspace/src/github.com/bitmark-inc/bitmark-ifttt/server/tests/jwt_public.pem",
   "thumbnail": {
     "s3_bucket": "bitmark-profiles-devnet",
     "server_url": "https://s3-ap-southeast-1.amazonaws.com/bitmark-profiles-devnet"
