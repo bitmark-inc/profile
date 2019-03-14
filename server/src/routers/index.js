@@ -9,9 +9,6 @@ let { assetAPIs, accountAPIs } = require('./../apis');
 router.post('/s/asset/thumbnail', upload.single('file'), assetAPIs.postThumbnail);
 router.get('/s/asset/thumbnail', assetAPIs.getThumbnail);
 
-router.post('/s/asset/limit-by-issuer', assetAPIs.postLimitedEdition);
-router.get('/s/asset/limit-by-issuer', assetAPIs.getLimitedEdition);
-
 router.get('/s/account/identities', accountAPIs.getIdentities);
 router.get('/s/account/identities/:accountNumber', accountAPIs.getIdentity);
 

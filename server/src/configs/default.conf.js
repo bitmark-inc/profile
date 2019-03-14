@@ -20,6 +20,7 @@ module.exports = {
     password: CONFIGURATION_REQUIRED,
     database: CONFIGURATION_REQUIRED,
   },
+  public_key_file: CONFIGURATION_REQUIRED,
   thumbnail: {
     s3_bucket: CONFIGURATION_REQUIRED,
   },
