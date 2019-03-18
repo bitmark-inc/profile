@@ -8,7 +8,6 @@ const {
   verifySignature,
   validJWT,
 } = require('./../utils');
-const { getRecord, setRecord } = require('./../models');
 const { uploadFileToS3 } = require('./../services');
 
 const { config } = global.appContext;
@@ -71,10 +70,6 @@ module.exports = {
         throw newError('No files were uploaded.', 400);
       }
 
-      if (limitedEdition) {
-        let key = `Limited_Edition_${assetId}_${bitmarkAccountNumber}`;
-        await setRecord(key, { limited: limitedEdition });
-      }
       await uploadFileToS3(fse.readFileSync(req.file.path), `${assetId}_thumbnail.png`);
       await fse.unlink(req.file.path);
       res.send({ ok: true });
