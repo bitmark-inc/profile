@@ -6,7 +6,7 @@ const moment = require('moment');
 const {
   responseError, newError,
   verifySignature,
-  validJWT,
+  validateJWT,
 } = require('./../utils');
 const { uploadFileToS3 } = require('./../services');
 
@@ -43,7 +43,7 @@ module.exports = {
       jwt = jwt ? (jwt.replace('Bearer ', '')) : '';
 
       if (jwt) {
-        let decodedData = await validJWT(jwt);
+        let decodedData = await validateJWT(jwt);
         if (decodedData && decodedData.sub && decodedData.aud === 'write') {
           bitmarkAccountNumber = decodedData.sub;
         } else {

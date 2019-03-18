@@ -39,7 +39,7 @@ const verifySignature = (messageString, signatureHex, bitmarkAccountNumber) => {
   }
 };
 
-const validJWT = (token) => {
+const validateJWT = (token) => {
   return new Promise((resolve) => {
     jwt.verify(token, certJWT, {
       algorithms: ['RS256'],
@@ -47,6 +47,8 @@ const validJWT = (token) => {
       if (error) {
         return resolve();
       }
+      // token should be issued before current time and expired after current time.
+      // time in token is second
       if (decoded && (decoded.iat * 1000) < Date.now() && (decoded.exp * 1000) > Date.now()) {
         resolve(decoded);
       } else {
@@ -60,5 +62,5 @@ const validJWT = (token) => {
 module.exports = {
   responseError, newError,
   verifySignature,
-  validJWT,
+  validateJWT,
 };
