@@ -6,8 +6,8 @@ const moment = require('moment');
 const {
   responseError, newError,
   verifySignature,
+  validateJWT,
 } = require('./../utils');
-const { getRecord, setRecord } = require('./../models');
 const { uploadFileToS3 } = require('./../services');
 
 const { config } = global.appContext;
@@ -38,13 +38,28 @@ module.exports = {
       let bitmarkAccountNumber = req.headers.requester;
       let assetId = req.body.asset_id;
       let limitedEdition = req.body.limited_edition;
-      console.log('postThumbnail : ', { signature, assetId, limitedEdition, bitmarkAccountNumber });
-      if (!bitmarkSDK.Account.isValidAccountNumber(bitmarkAccountNumber)) {
-        throw newError('Account number is not valid.', 400);
-      }
-      let message = assetId + (limitedEdition ? ('|' + limitedEdition) : '');
-      if (!verifySignature(message, signature, bitmarkAccountNumber)) {
-        throw newError('Invalid signature.', 400);
+
+      let jwt = req.headers.authorization;
+      jwt = jwt ? (jwt.replace('Bearer ', '')) : '';
+
+      if (jwt) {
+        let decodedData = await validateJWT(jwt);
+        if (decodedData && decodedData.sub && decodedData.aud === 'write') {
+          bitmarkAccountNumber = decodedData.sub;
+        } else {
+          res.status(400);
+          res.send({ error: 'Invalid jwt-token!' });
+          return;
+        }
+      } else {
+        console.log('postThumbnail : ', { signature, assetId, limitedEdition, bitmarkAccountNumber });
+        if (!bitmarkSDK.Account.isValidAccountNumber(bitmarkAccountNumber)) {
+          throw newError('Account number is not valid.', 400);
+        }
+        let message = assetId + (limitedEdition ? ('|' + limitedEdition) : '');
+        if (!verifySignature(message, signature, bitmarkAccountNumber)) {
+          throw newError('Invalid signature.', 400);
+        }
       }
 
       let assetInfo = await bitmarkSDK.Asset.get(assetId);
@@ -55,10 +70,6 @@ module.exports = {
         throw newError('No files were uploaded.', 400);
       }
 
-      if (limitedEdition) {
-        let key = `Limited_Edition_${assetId}_${bitmarkAccountNumber}`;
-        await setRecord(key, { limited: limitedEdition });
-      }
       await uploadFileToS3(fse.readFileSync(req.file.path), `${assetId}_thumbnail.png`);
       await fse.unlink(req.file.path);
       res.send({ ok: true });
@@ -73,56 +84,6 @@ module.exports = {
   getThumbnail: async (req, res) => {
     let assetId = req.query.asset_id;
     res.redirect(`${config.thumbnail.server_url}/${assetId}_thumbnail.png`);
-  },
-  postLimitedEdition: async (req, res) => {
-    try {
-      let signature = req.headers.signature;
-      let assetId = req.headers.token;
-      let bitmarkAccountNumber = req.headers.requester;
-
-      if (!bitmarkSDK.Account.isValidAccountNumber(bitmarkAccountNumber)) {
-        throw newError('Account number is not valid.', 400);
-      }
-      if (!verifySignature(assetId, signature, bitmarkAccountNumber)) {
-        throw newError('Invalid signature.', 400);
-      }
-
-      let bitmarkQueryParams = bitmarkSDK.Bitmark.newBitmarkQueryBuilder()
-        .issuedBy(bitmarkAccountNumber)
-        .referencedAsset(assetId)
-        .pending(true)
-        .limit(10)
-        .build();
-
-      let issuedBitmarks = await bitmarkSDK.Bitmark.list(bitmarkQueryParams);
-      if (!issuedBitmarks || issuedBitmarks.length <= 0) {
-        throw newError('You are not issuer.', 400);
-      }
-      let limited = req.body.limited;
-      let key = `Limited_Edition_${assetId}_${bitmarkAccountNumber}`;
-
-      await setRecord(key, { limited });
-      res.send({ ok: true });
-    } catch (error) {
-      console.log('error:', error);
-      responseError(res, error);
-    }
-  },
-  getLimitedEdition: async (req, res) => {
-    try {
-      let bitmarkAccountNumber = req.query.issuer;
-      let assetId = req.query.asset_id;
-
-      if (!bitmarkSDK.Account.isValidAccountNumber(bitmarkAccountNumber)) {
-        throw newError('Account number is not valid.', 400);
-      }
-      let key = `Limited_Edition_${assetId}_${bitmarkAccountNumber}`;
-      let result = await getRecord(key);
-      res.send(result ? result.value : {});
-    } catch (error) {
-      console.log('error:', error);
-      responseError(res, error);
-    }
   },
   claimAsset: async (req, res) => {
     try {
